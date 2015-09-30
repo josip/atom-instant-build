@@ -1,0 +1,25 @@
+{
+  "name": "instant-build",
+  "main": "./lib/instant-build",
+  "version": "0.0.0",
+  "description": "Simple and fast build system for Atom text editor",
+  "keywords": ["build"],
+  "repository": "https://github.com/josip/atom-instant-build",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "atom-message-panel": "^1.2.4",
+    "atom-space-pen-views": "^2.1.0",
+    "jquery": "^2.1.4",
+    "underscore": "^1.8.3"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "cmd": "sleep $N",
+  "env": {
+    "N": "1",
+    "MSG": "DONE"
+  }
+}

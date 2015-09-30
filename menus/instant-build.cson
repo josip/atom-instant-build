@@ -1,0 +1,14 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Instant Build'
+      'submenu': [
+        {
+          'label': 'Build current project folder'
+          'command': 'instant-build:build'
+        }
+      ]
+    ]
+  }
+]

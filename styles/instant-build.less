@@ -1,0 +1,60 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+
+// source: http://tobiasahlin.com/spinkit/
+@-webkit-keyframes instant-build-spinner {
+  0% { -webkit-transform: scale(0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}
+
+.instant-build {
+  &-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 5px 0 0;
+    background-color: @text-color-info;
+    vertical-align: text-top;
+    border-radius: 100%;
+    -webkit-animation: instant-build-spinner 1.0s infinite ease-in-out;
+  }
+
+  &-status {
+    display: inline-block;
+    @width: 100px;
+    width: @width;
+    margin-right: 5px;
+    margin-left: -100px;
+    -webkit-transition: margin-left .3s ease, opacity .3s ease;
+
+    &.bb-visible {
+      opacity: 1;
+      margin-left: 0;
+    }
+
+    &.bb-hidden {
+      opacity: 0;
+      margin-left: -@width;
+    }
+
+
+    &.building {
+      color: @text-color-info;
+    }
+
+    &.success {
+      color: @text-color-success;
+    }
+
+    &.error {
+      color: @text-color-error;
+    }
+  }
+}
