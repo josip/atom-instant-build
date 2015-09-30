@@ -1,6 +1,6 @@
 # instant-build
 
-A dead simple and instant fast way of launching your build system straight from [Atom](https://atom.io).
+A dead simple and instantly fast way of launching your build system straight from [Atom](https://atom.io).
 
 ## Features
 
@@ -18,15 +18,7 @@ A dead simple and instant fast way of launching your build system straight from 
 apm install instant-build
 ```
 
-And then add the following to your keymap file:
-
-```
-'atom-workspace':
-  'cmd-b': 'instant-build:build'
-```
-
-This will bind `Command-B` shortcut to `instant-build`.
-
+You can start the build by either searching for "Instant build" in your command panel or via `Command-B`.
 
 ## Configuration
 
