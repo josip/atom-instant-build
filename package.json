@@ -1,9 +1,11 @@
 {
   "name": "instant-build",
   "main": "./lib/instant-build",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Instantly launch builds from Atom",
-  "keywords": ["build"],
+  "keywords": [
+    "build"
+  ],
   "repository": "https://github.com/josip/atom-instant-build",
   "license": "MIT",
   "engines": {
