@@ -15,6 +15,17 @@
 }
 
 .instant-build {
+  @width: 100px;
+
+  &-progress-bar {
+    position: absolute;
+    // bottom: 0;
+    background-color: @text-color-info;
+    width: 0px;
+    height: 2px;
+    opacity: 0;
+  }
+
   &-spinner {
     display: inline-block;
     width: 12px;
@@ -28,7 +39,6 @@
 
   &-status {
     display: inline-block;
-    @width: 100px;
     width: @width;
     margin-right: 5px;
     margin-left: -100px;
@@ -43,7 +53,6 @@
       opacity: 0;
       margin-left: -@width;
     }
-
 
     &.building {
       color: @text-color-info;

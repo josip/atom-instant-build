@@ -84,7 +84,8 @@ build = ({root, config}) ->
   )
 
 startBuild = (args) ->
-  build(args).then(showBuildSuccess, showBuildError)
+  build(args)
+    .then(showBuildSuccess, showBuildError)
 
 showBuildSuccess = () ->
   Builder.setStatus STATUS_SUCCESS, 'Build finished'
@@ -106,7 +107,8 @@ iconForStatus = (status) ->
     when STATUS_SUCCESS then 'icon-check'
     when STATUS_ERROR then 'icon-x'
 
-currentBuilds = {}
+currentBuild = null
+buildTimes = {}
 module.exports = Builder =
   setStatusBarView: (@statusBarView) ->
 
@@ -117,7 +119,11 @@ module.exports = Builder =
       message,
       resetAfterTimeout: status isnt STATUS_BUILDING
     )
-    @statusBarView.setSpinnerVisibility(if status is STATUS_BUILDING then 'show' else 'hide')
+    if status is STATUS_BUILDING
+      @statusBarView.animateProgressBar(buildTimes[currentBuild])
+      @statusBarView.setSpinnerVisibility('show')
+    else
+      @statusBarView.setSpinnerVisibility('hide')
 
     @messagePanel?.close() if not silent
 
@@ -136,11 +142,14 @@ module.exports = Builder =
     }))
 
   build: (projectRoot) ->
-    return if currentBuilds[projectRoot]
+    return if currentBuild
 
-    currentBuilds[projectRoot] = true
+    currentBuild = projectRoot
+    startedAt = Date.now()
+
     buildFinished = () ->
-      currentBuilds[projectRoot] = false
+      currentBuild = null
+      buildTimes[projectRoot] = Date.now() - startedAt
 
     locateBuildConfig(projectRoot)
     .then(startBuild, showError)
