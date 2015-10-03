@@ -1,7 +1,7 @@
 {
   "name": "instant-build",
   "main": "./lib/instant-build",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Instantly launch builds from Atom",
   "keywords": [
     "build"
