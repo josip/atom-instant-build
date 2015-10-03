@@ -22,8 +22,8 @@ You can start the build by either searching for "Instant build" in your command 
 
 ## Configuration
 
-`instant-build` current requires a `.atom-build.json` file at the root of your project.
-File format is compatible to that of [atom-build](https://github.com/noseglid/atom-build),
+`instant-build` currently requires a `.atom-build.json` file at the root of your project.
+File format is compatible with that of [atom-build](https://github.com/noseglid/atom-build),
 just with less options.
 
 ```js
@@ -40,9 +40,7 @@ just with less options.
     "VAR2": "2"
   },
   // [optional] shell to execute the command with (default: /bin/sh)
-  "shell": true,
-  // alias for "shell"
-  "sh": true
+  "shell": "/bin/sh"
 }
 ```
 

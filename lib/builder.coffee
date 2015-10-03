@@ -1,7 +1,7 @@
 fs = require 'fs'
 path = require 'path'
 childProcess = require 'child_process'
-{isArray} = require 'underscore'
+{extend, isArray, last} = require 'underscore'
 {MessagePanelView, PlainMessageView} = require 'atom-message-panel'
 
 CONFIG_FILENAME = '.atom-build.json'
@@ -38,22 +38,49 @@ parseBuildConfig = ({root, configPath}) ->
 build = ({root, config}) ->
   cmd = config.cmd
   cmd = cmd.join(' ') if isArray(cmd)
-  cmd += config.args.join(' ') if isArray(config.args)
+  cmd += ' ' + config.args.join(' ') if isArray(config.args)
 
   Builder.setStatus STATUS_BUILDING, 'Building&hellip;'
 
   return new Promise((resolve, reject) ->
-    childProcess.exec(cmd, {
-      env: config.env,
-      cwd: root,
-      shell: config.sh || config.shell
-    }, (err, stdout, stderr) ->
+    procConfig =
+      cwd: root
+      env: {}
+      sh: config.sh or config.shell or process.env.SHELL
 
-      if err
-        return reject({err, stdout, stderr})
+    shellBuffer = new Buffer(0)
+    # on OS X, .apps don't inherit users' default env variables
+    shell = childProcess.spawn procConfig.sh, ['-lc', 'export'],
+      detached: true,
+      stdio: ['ignore', 'pipe', 'ignore']
 
-      resolve(true)
-    )
+    shell.stdout.on 'data', (data) ->
+      shellBuffer = Buffer.concat([shellBuffer, data])
+
+    shell.on 'close', () ->
+      #
+      # /bin/bash -lc export looks like:
+      # declare -x VAR_NAME="value"
+      #
+      # while for /bin/sh its:
+      # export VAR_NAME="value"
+      #
+      # and for zsh it's ofc different:
+      # ENV_NAME=vlaue
+      #
+      for row in shellBuffer.toString().trim().split('\n')
+        [k, v] = row.split('=', 2)
+        k = last(k.split(' '))
+        if v?.length and v[0] is '"' and last(v) is '"'
+          v = v.slice(1, -1)
+
+        procConfig.env[k] = v
+
+      extend(procConfig.env, config.env || {})
+
+      childProcess.exec(cmd, procConfig, (err, stdout, stderr) ->
+        if err then reject({err, stdout, stderr}) else resolve(true)
+      )
   )
 
 startBuild = (args) ->
@@ -67,7 +94,7 @@ showBuildError = (arg) ->
 
   {err, stdout, stderr} = arg
   Builder.setStatus STATUS_ERROR, 'Build failed'
-  Builder.setErrorMessage(stderr or stderr)
+  Builder.setErrorMessage(stdout or stderr)
 
 showError = (message) ->
   Builder.setStatus STATUS_ERROR, 'Build failed'
