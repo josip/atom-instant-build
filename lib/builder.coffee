@@ -10,13 +10,19 @@ STATUS_SUCCESS = 'success'
 STATUS_ERROR = 'error'
 
 buildConfigs =
-  instantBuild: (root) ->
-    configPath = path.join root, CONFIG_FILENAME
-    try
-      delete require.cache[configPath]
-      require configPath
-    catch e
-      false
+  dotAtomBuild: (root) ->
+    dir = root
+
+    loop
+      try
+        configPath = path.join dir, CONFIG_FILENAME
+        delete require.cache[configPath]
+        return require configPath
+      catch e
+        parentDir = path.normalize(path.join(dir, '..'))
+        # stop at /
+        return false if parentDir is dir
+        dir = parentDir
 
 locateBuildConfig = (root) ->
   new Promise((resolve, reject) ->
