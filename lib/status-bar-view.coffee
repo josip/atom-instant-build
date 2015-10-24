@@ -3,7 +3,6 @@
 ROOT_CLASS = 'instant-build-status'
 ELEMENT_VISIBLE_CLASS = 'bb-visible'
 ELEMENT_HIDDEN_CLASS = 'bb-hidden'
-SPINNER_CLASS = 'instant-build-spinner'
 PROGRESS_CLASS = 'instant-build-progress-bar'
 STATUS_TEXT_CLASS = 'instant-build-status-text'
 
@@ -13,7 +12,6 @@ class StatusBarView
     @element = $("""
         <span class="#{ROOT_CLASS} #{ELEMENT_HIDDEN_CLASS}">
           <div class="#{PROGRESS_CLASS}"></div>
-          <div class="#{SPINNER_CLASS}" style="display:none"></div>
           <i class="icon"></i>
           <span class="#{STATUS_TEXT_CLASS}"></span>
         </span>
@@ -41,7 +39,6 @@ class StatusBarView
 
   setSpinnerVisibility: (state) ->
     return if state isnt 'hide' and state isnt 'show'
-    @getComponent(SPINNER_CLASS)[state]()
 
     if state is 'hide'
       @getComponent(PROGRESS_CLASS).css
