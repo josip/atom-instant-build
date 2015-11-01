@@ -33,14 +33,6 @@ locateBuildConfig = (root) ->
     return reject('No valid configuration file found')
   )
 
-parseBuildConfig = ({root, configPath}) ->
-  try
-    delete require.cache[configPath]
-    config = require configPath
-    Promise.resolve({root, config})
-  catch e
-    Promise.reject(e)
-
 build = ({root, config}) ->
   cmd = config.cmd
   cmd = cmd.join(' ') if isArray(cmd)
